@@ -44,6 +44,7 @@ struct AdminDashboardView: View {
             }
         }
         .navigationTitle("Admin Dashboard")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button("Logout") { onLogout() }

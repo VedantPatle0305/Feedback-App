@@ -35,6 +35,7 @@ struct AdminAddEditFeedbackView: View {
                 }
             }
             .navigationTitle(editing == nil ? "Add Feedback" : "Edit Feedback")
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(
                 leading: Button("Cancel") { isPresented = false },
                 trailing: Button("Save") { save() }
@@ -69,6 +70,12 @@ struct AdminAddEditFeedbackView: View {
     }
 }
     
-//#Preview {
-//    AdminAddEditFeedbackView(isPresented: true, onSave: <#() -> Void#>)
-//}
+#Preview {
+    // Fake binding for preview
+    AdminAddEditFeedbackView(
+        isPresented: .constant(true),
+        editing: nil,
+        onSave: { print("Saved feedback") }
+    )
+}
+
