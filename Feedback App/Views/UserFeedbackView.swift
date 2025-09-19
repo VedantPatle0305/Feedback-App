@@ -17,59 +17,96 @@ struct UserFeedbackView: View {
     }
     
     var body: some View {
-        Form {
-            Section(header: Text("Your Info")) {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("Logged in as").font(.caption)
-                        Text(AuthService.shared.currentUser?.name ?? "-")
-                        Text(AuthService.shared.currentUser?.email ?? "")
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
-                    Button("Logout") {
-                        onLogout()
-                    }
-                    .foregroundColor(.red)
+        VStack {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("Logged in as").font(.caption)
+                    Text(AuthService.shared.currentUser?.name ?? "userName")
+                    Text(AuthService.shared.currentUser?.email ?? "Email")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
                 }
+                Spacer()
+                Button("Logout") {
+                    onLogout()
+                }
+                .foregroundColor(.red)
             }
+            .padding()
+            .background(
+                Color.gray.opacity(0.1)
+                    .cornerRadius(10)
+            )
             
-            Section(header: Text("Your Feedback")) {
+            Spacer()
+            
+            VStack {
                 if vm.savedMessage == nil {
                     // No feedback yet → show input + submit button
-                    TextEditor(text: $vm.message)
-                        .frame(minHeight: 100)
-                    
-                    Button("Submit") {
-                        vm.submit()
+                    VStack{
+                        Text("Enter your feedback here...")
+                        TextEditor(text: $vm.message)
+                            .frame(minHeight: 100)
+                            .frame(maxHeight: 160)
+                            .cornerRadius(20)
+                        
+                        Button("Submit") {
+                            vm.submit()
+                        }
+                        .padding()
+                        .buttonStyle(.borderedProminent)
+                        .frame(maxWidth: .infinity)
                     }
-                    .frame(maxWidth: .infinity)
+                    .padding(20)
+                    .background(
+                        Color.secondary.opacity(0.2)
+                        .cornerRadius(20)
+                    )
+
                 } else {
                     // Feedback exists → show message and edit option
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(vm.savedMessage ?? "")
-                            .padding(.vertical, 4)
-                        Text("Submitted on \(dateString())")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                        
-                        Button("Edit Feedback") {
-                            // Enable editing
-                            vm.message = vm.savedMessage ?? ""
-                            vm.savedMessage = nil
+                    VStack(alignment: .center, spacing: 40) {
+                        VStack(alignment: .leading){
+                            Text(vm.savedMessage ?? "Feedback")
+                                .padding(.vertical, 4)
+                            
+                            Text("Submitted on \(dateString())")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
                         }
-                        .buttonStyle(.bordered)
+                        .frame(width: UIScreen.main.bounds.width*0.85)
+                        
+                        HStack{
+                            Button("Edit Feedback") {
+                                // Enable editing
+                                vm.message = vm.savedMessage ?? ""
+                                vm.savedMessage = nil
+                            }
+                            .buttonStyle(.bordered)
+                        }
+                        .frame(width: UIScreen.main.bounds.width*0.85)
+                            
                     }
+                    .padding()
+                    .frame(width: UIScreen.main.bounds.width*0.85)
+                    .background(
+                        Color.secondary.opacity(0.2)
+                        .cornerRadius(20)
+                    )
+                    
                 }
             }
+//            .border(Color.gray)
             
             if let error = vm.errorMessage {
                 Section {
                     Text(error).foregroundColor(.red)
                 }
             }
+            Spacer()
+            Spacer()
         }
+        .padding()
         .navigationTitle("Feedback")
         .toolbarTitleDisplayMode(.inline)
     }
