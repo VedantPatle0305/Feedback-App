@@ -71,6 +71,7 @@ struct UserFeedbackView: View {
             }
         }
         .navigationTitle("Feedback")
+        .toolbarTitleDisplayMode(.inline)
     }
     
     private func dateString() -> String {
@@ -86,6 +87,17 @@ struct UserFeedbackView: View {
 
 
 
-//#Preview {
-//    UserFeedbackView()
-//}
+#Preview {
+    let dummyUser = User(
+        name: "Test User",
+        email: "test@example.com",
+        password: "1234",
+        isAdmin: false
+    )
+    
+    return NavigationView {
+        UserFeedbackView(user: dummyUser) {
+            print("Logout tapped")
+        }
+    }
+}

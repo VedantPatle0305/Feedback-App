@@ -12,31 +12,53 @@ struct RegistrationView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        Form {
-            Section(header: Text("Details")) {
+        VStack(alignment: .center, spacing: 20){
+            VStack(spacing: 20){
+                Text("Register")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .fontWidth(.expanded)
+                
                 TextField("Name", text: $vm.name)
-                TextField("Email", text: $vm.email)
-                    .keyboardType(.emailAddress)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
+                
+                TextField("Email", text: $vm.email)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .autocapitalization(.none)
+                    .keyboardType(.emailAddress)
+                
                 SecureField("Password", text: $vm.password)
-            }
-            
-            if let error = vm.errorMessage {
-                Section {
-                    Text(error).foregroundColor(.red)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                if let error = vm.errorMessage {
+                    Section {
+                        Text(error).foregroundColor(.red)
+                    }
                 }
-            }
-            
-            Section {
+                
                 Button("Register") {
                     vm.register()
                     if vm.success {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
+                .buttonStyle(.borderedProminent)
+                .frame(maxWidth: .infinity)
+                
+
+                NavigationLink("Already have an account? Login") {
+                    LoginView { _ in }
+                }
+                .padding(.top, 8)
+                .foregroundColor(Color.primary)
+                
             }
+            .padding(20)
+            .background(Color.gray.opacity(0.2).cornerRadius(20))
         }
-        .navigationTitle("Register")
+        .padding()
+//        .navigationTitle("Register")
     }
 }
 

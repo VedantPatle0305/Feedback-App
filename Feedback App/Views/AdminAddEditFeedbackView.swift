@@ -70,5 +70,5 @@ struct AdminAddEditFeedbackView: View {
 }
     
 //#Preview {
-//    AdminAddEditFeedbackView()
+//    AdminAddEditFeedbackView(isPresented: true, onSave: <#() -> Void#>)
 //}

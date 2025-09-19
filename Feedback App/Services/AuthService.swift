@@ -15,6 +15,7 @@ final class AuthService {
     private init() {
         loadUsers()
         seedAdminIfNeeded()
+        loadCurrentUser()
     }
     
     private func loadUsers() {
@@ -34,6 +35,22 @@ final class AuthService {
             let admin = User(name: "Admin", email: "admin@gmail.com", password: "admin123", isAdmin: true)
             users.append(admin)
             saveUsers()
+        }
+    }
+    
+    private func saveCurrentUser() {
+        if let user = currentUser {
+            LocalStorage.shared.save(user.id.uuidString, forKey: StorageKeys.currentUserId)
+        } else {
+            UserDefaults.standard.removeObject(forKey: StorageKeys.currentUserId)
+        }
+    }
+        
+    private func loadCurrentUser() {
+        if let userIdString: String = LocalStorage.shared.load(String.self, forKey: "currentUserId"),
+        let uuid = UUID(uuidString: userIdString),
+        let user = users.first(where: { $0.id == uuid }) {
+            currentUser = user
         }
     }
     
@@ -61,11 +78,13 @@ final class AuthService {
             throw AuthError.invalid("Invalid email or password")
         }
         currentUser = user
+        saveCurrentUser()
         return user
     }
     
     func logout() {
         currentUser = nil
+        saveCurrentUser()
     }
     
     enum AuthError: LocalizedError {
