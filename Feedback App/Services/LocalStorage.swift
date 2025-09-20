@@ -8,9 +8,9 @@
 import Foundation
 
 enum StorageKeys {
-    static let users = "assignment_users_v1"
-    static let feedbacks = "assignment_feedbacks_v1"
-    static let currentUserId = "assignment_current_user_id_v1"
+    static let users = "assignment_users"
+    static let feedbacks = "assignment_feedbacks"
+    static let currentUserId = "assignment_current_user_id"
 }
 
 final class LocalStorage {
